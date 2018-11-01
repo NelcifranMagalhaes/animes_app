@@ -5,7 +5,7 @@ export default createStackNavigator({
   'Login': {
     screen: LoginPage,
     navigationOptions:{
-    	title: 'Ohayou!!'
+    	title: 'Ohayou!!',
     }
 }
 
