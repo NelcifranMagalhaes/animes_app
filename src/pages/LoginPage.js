@@ -11,6 +11,7 @@ export default class LoginPage extends React.Component {
 			mail: '',
 			password: '',
 			isLoading: false,
+			message: '',
 		}
 	}
 
@@ -32,16 +33,44 @@ export default class LoginPage extends React.Component {
 			[field]: value
 		});
 	}
-
+	//faz a tentativa de login do usuário no firebase
 	tryLogin(){
-		this.setState({isLoading: true});
+		this.setState({isLoading: true, message: ''});
 		const {mail, password} = this.state;
 
-		 firebase.auth().signInWithEmailAndPassword(mail,password).then(user =>{console.log('Easy autenticado',user);})
-		 .catch(error => {console.log('not easy encontrado', error);
-		}).then(() => this.setState({isLoading: false}));
+		 firebase.auth().signInWithEmailAndPassword(mail,password).
+		 then(user =>{
+		 	this.setState({message: 'Sucesso!'});
+		 })
+		 .catch(error => {
+		 	this.setState({message: this.getMessageByErrorCode(error.code) });
+		})
+		 .then(() => this.setState({isLoading: false}));
 	}
 
+	//devolve uma mensagem de acordo com um código de error
+	getMessageByErrorCode(errorCode){
+		switch(errorCode){
+			case 'auth/wrong-password':
+				return 'Senha incorreta';
+			case 'auth/user-not-found':
+				return 'Usuário não encontrado';
+			default: 
+				return 'Error Desconhecido';
+		}
+
+	}
+	//renderiza a mensagem
+	renderMessage(){
+		const {message} = this.state;
+		if (!message)
+			return null;
+		return(
+			<View>
+				<Text>{message}</Text>
+			</View>);
+	}
+	//renderiza o botão
 	renderButton(){
 		if (this.state.isLoading)
 			return <ActivityIndicator/>;
@@ -62,7 +91,7 @@ export default class LoginPage extends React.Component {
 						onChangeText ={value => this.onChangeHandler('password',value)}/>
 					</FormRow>
 					{this.renderButton()}
-					
+					{this.renderMessage()}
 				</View>
 			)
 	}
