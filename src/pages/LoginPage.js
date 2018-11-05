@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text ,TextInput, StyleSheet , Button } from 'react-native';
+import {View, Text ,TextInput, StyleSheet , Button , ActivityIndicator} from 'react-native';
 import FormRow from '../components/FormRow';
 import firebase from 'firebase';
+
 export default class LoginPage extends React.Component {
 
 	constructor(props){
@@ -9,11 +10,13 @@ export default class LoginPage extends React.Component {
 		this.state ={
 			mail: '',
 			password: '',
+			isLoading: false,
 		}
 	}
 
 	componentDidMount() {
-		var config = {
+
+		const config = {
 		   apiKey: "AIzaSyC7iIgJaPptPYAj7cn63YKVAFBrfQv_LAU",
 		   authDomain: "animes-92703.firebaseapp.com",
 		   databaseURL: "https://animes-92703.firebaseio.com",
@@ -31,7 +34,20 @@ export default class LoginPage extends React.Component {
 	}
 
 	tryLogin(){
-		console.log(this.state);
+		this.setState({isLoading: true});
+		const {mail, password} = this.state;
+
+		 firebase.auth().signInWithEmailAndPassword(mail,password).then(user =>{console.log('Easy autenticado',user);})
+		 .catch(error => {console.log('not easy encontrado', error);
+		}).then(() => this.setState({isLoading: false}));
+	}
+
+	renderButton(){
+		if (this.state.isLoading)
+			return <ActivityIndicator/>;
+		return(
+			<Button title= "Entrar" onPress={()=> this.tryLogin()}/>
+			);
 	}
 
 	render(){
@@ -45,8 +61,8 @@ export default class LoginPage extends React.Component {
 						<TextInput style ={styles.input} placeholder="senha" secureTextEntry value={this.state.password} 
 						onChangeText ={value => this.onChangeHandler('password',value)}/>
 					</FormRow>
-
-					<Button title= "Entrar" onPress={()=> this.tryLogin()}/>
+					{this.renderButton()}
+					
 				</View>
 			)
 	}
