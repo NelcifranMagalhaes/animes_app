@@ -55,10 +55,11 @@ export default class LoginPage extends React.Component {
 				return 'Senha incorreta';
 			case 'auth/user-not-found':
 				return 'Usuário não encontrado';
-			default: 
+			case 'auth/invalid-email':
+				return 'Email inválido';
+			default:
 				return 'Error Desconhecido';
 		}
-
 	}
 	//renderiza a mensagem
 	renderMessage(){
@@ -83,11 +84,11 @@ export default class LoginPage extends React.Component {
 		return (
 				<View style={styles.container}>
 					<FormRow first>
-						<TextInput style ={styles.input} placeholder="email" value={this.state.mail} 
+						<TextInput style ={styles.input} placeholder="email" value={this.state.mail}
 						onChangeText ={value => this.onChangeHandler('mail',value)}/>
 					</FormRow>
 					<FormRow last>
-						<TextInput style ={styles.input} placeholder="senha" secureTextEntry value={this.state.password} 
+						<TextInput style ={styles.input} placeholder="senha" secureTextEntry value={this.state.password}
 						onChangeText ={value => this.onChangeHandler('password',value)}/>
 					</FormRow>
 					{this.renderButton()}
