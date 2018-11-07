@@ -3,6 +3,7 @@ import {View, Text ,TextInput, StyleSheet , Button , ActivityIndicator} from 're
 import FormRow from '../components/FormRow';
 import firebase from 'firebase';
 
+
 export default class LoginPage extends React.Component {
 
 	constructor(props){
@@ -76,7 +77,17 @@ export default class LoginPage extends React.Component {
 		if (this.state.isLoading)
 			return <ActivityIndicator/>;
 		return(
-			<Button title= "Entrar" onPress={()=> this.tryLogin()}/>
+      <View style = {styles.button}>
+				<Button title= "Entrar" onPress={()=> this.tryLogin()}/>
+      </View>
+			);
+	}
+	//renderiza o botão
+	renderButtonSubs(){
+		return(
+			<View style = {styles.button}>
+				<Button title= "Inscrever-se" onPress={()=> this.props.navigation.navigate('Subscribe')}/>
+			</View>
 			);
 	}
 
@@ -92,6 +103,7 @@ export default class LoginPage extends React.Component {
 						onChangeText ={value => this.onChangeHandler('password',value)}/>
 					</FormRow>
 					{this.renderButton()}
+					{this.renderButtonSubs()}
 					{this.renderMessage()}
 				</View>
 			)
@@ -103,10 +115,16 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 		paddingRight: 10,
 	},
-
-	input: {
+	input:{
 		paddingLeft: 5,
 		paddingRight: 5,
 		paddingBottom: 5,
-	}
+	},
+
+	button:{
+		paddingLeft: 5,
+		paddingRight: 5,
+		paddingBottom: 5,
+	},
+
 });

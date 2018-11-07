@@ -1,5 +1,6 @@
 import { createStackNavigator } from  'react-navigation';
 import LoginPage from './src/pages/LoginPage';
+import SubscribePage from './src/pages/SubscribePage';
 
 export default createStackNavigator({
   'Login': {
@@ -7,6 +8,12 @@ export default createStackNavigator({
     navigationOptions:{
     	title: 'Ohayou!!',
     }
+},
+  'Subscribe': {
+  screen: SubscribePage,
+  navigationOptions:{
+    title: 'Ikimashouka.',
+  },
 }
 
  },{
